@@ -1,0 +1,42 @@
+{
+  "name": "emberconf-broccoli-workshop",
+  "version": "1.0.0",
+  "description": "Broccoli workshop for Emberconf boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "build": "node $NODE_DEBUG_OPTION $(which broccoli)  build --overwrite",
+    "build-prod": "node $NODE_DEBUG_OPTION $(which broccoli)  build --overwrite --prod",
+    "serve": "node $NODE_DEBUG_OPTION $(which broccoli)  serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oligriffiths/emberconf-broccoli-workshop.git"
+  },
+  "keywords": [
+    "broccoli",
+    "emberconf"
+  ],
+  "author": "Oli Griffiths",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oligriffiths/emberconf-broccoli-workshop/issues"
+  },
+  "homepage": "https://github.com/oligriffiths/emberconf-broccoli-workshop#readme",
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "broccoli": "^2.1.0",
+    "broccoli-asset-rev": "^3.0.0",
+    "broccoli-clean-css": "^2.0.1",
+    "broccoli-cli": "^1.0.0",
+    "broccoli-funnel": "^2.0.2",
+    "broccoli-livereload": "^1.4.0",
+    "broccoli-merge-trees": "^3.0.2",
+    "broccoli-rollup": "^2.1.1",
+    "broccoli-sass-source-maps": "^4.0.0",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.2.1",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-uglify": "^3.0.0",
+    "sass": "^1.17.2"
+  }
+}
