@@ -10,8 +10,10 @@ yarn add --dev broccoli \
     broccoli-asset-rev \
     broccoli-merge-trees \
     broccoli-funnel \
-    broccoli-rollup \
+    broccoli-babel-transpiler \
+    @babel/preset-env \
     @babel/core \
+    broccoli-rollup \
     rollup-plugin-babel \
     rollup-plugin-commonjs \
     rollup-plugin-node-resolve \
@@ -30,8 +32,10 @@ npm install --save-dev broccoli \
     broccoli-asset-rev \
     broccoli-merge-trees \
     broccoli-funnel \
-    broccoli-rollup \
+    broccoli-babel-transpiler \
+    @babel/preset-env \
     @babel/core \
+    broccoli-rollup \
     rollup-plugin-babel \
     rollup-plugin-commonjs \
     rollup-plugin-node-resolve \
