@@ -1,5 +1,9 @@
 import funnel from 'broccoli-funnel';
 import merge from 'broccoli-merge-trees';
+import CompileSass from 'broccoli-sass-source-maps';
+import Sass from 'sass';
+
+const compileSass = CompileSass(Sass);
 
 export default () => {
   const appRoot = 'src';
@@ -17,13 +21,17 @@ export default () => {
     annotation: "JS files",
   });
 
-  // Copy CSS files from app root to destination
-  const css = funnel(appRoot, {
-    include: ["**/*.css"],
-    srcDir: 'styles',
-    destDir: 'assets/css',
-    annotation: "CSS files",
-  });
+  // Compile scss files to css
+  const css = compileSass(
+    [appRoot],
+    'styles/app.scss',
+    'assets/css/app.css',
+    {
+      annotation: "Sass files",
+      sourceMap: true,
+      sourceMapContents: true,
+    }
+  );
 
   return merge([html, js, css]);
 }
