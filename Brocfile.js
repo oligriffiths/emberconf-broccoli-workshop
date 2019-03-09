@@ -8,6 +8,7 @@ import EsLint from 'broccoli-lint-eslint';
 import sassLint from 'broccoli-sass-lint';
 import CleanCss from 'broccoli-clean-css';
 import AssetRev from 'broccoli-asset-rev';
+import { log } from 'broccoli-stew';
 import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
@@ -85,6 +86,10 @@ export default (options) => {
 
   // Include live reload server
   if (isDev) {
+    tree = log(tree, {
+      output: 'tree',
+    });
+
     tree = new LiveReload(tree, {
       target: 'index.html',
     });
