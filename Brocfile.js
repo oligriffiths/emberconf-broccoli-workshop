@@ -3,13 +3,14 @@ import merge from 'broccoli-merge-trees';
 import CompileSass from 'broccoli-sass-source-maps';
 import Sass from 'sass';
 import Rollup from 'broccoli-rollup';
+import LiveReload from 'broccoli-livereload';
 import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 
 const compileSass = CompileSass(Sass);
 
-export default () => {
+export default (options) => {
   const appRoot = 'src';
 
   // Copy HTML file from app root to destination
@@ -56,5 +57,14 @@ export default () => {
     }
   );
 
-  return merge([html, js, css]);
+  let tree = merge([html, js, css]);
+
+  // Include live reaload server
+  if (options.env === 'development') {
+    tree = new LiveReload(tree, {
+      target: 'index.html',
+    });
+  }
+
+  return tree;
 }
