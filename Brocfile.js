@@ -7,6 +7,7 @@ import LiveReload from 'broccoli-livereload';
 import EsLint from 'broccoli-lint-eslint';
 import sassLint from 'broccoli-sass-lint';
 import CleanCss from 'broccoli-clean-css';
+import AssetRev from 'broccoli-asset-rev';
 import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
@@ -53,7 +54,7 @@ export default (options) => {
       output: {
         file: "assets/js/app.js",
         format: "iife",
-        sourcemap: true,
+        sourcemap: isDev,
       },
       plugins: rollupPlugins,
     }
@@ -70,7 +71,7 @@ export default (options) => {
     'assets/css/app.css',
     {
       annotation: "Sass files",
-      sourceMap: true,
+      sourceMap: isDev,
       sourceMapContents: true,
     }
   );
@@ -86,6 +87,8 @@ export default (options) => {
     tree = new LiveReload(tree, {
       target: 'index.html',
     });
+  } else if (isProd) {
+    tree = new AssetRev(tree);
   }
 
   return tree;
