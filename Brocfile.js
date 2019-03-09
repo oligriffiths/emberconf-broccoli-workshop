@@ -9,7 +9,9 @@ import commonjs from 'rollup-plugin-commonjs';
 
 const compileSass = CompileSass(Sass);
 
-export default () => {
+export default (options) => {
+  const isDev = options.env === 'development';
+
   const appRoot = 'src';
 
   // Copy HTML file from app root to destination
@@ -27,7 +29,7 @@ export default () => {
       output: {
         file: "assets/js/app.js",
         format: "iife",
-        sourcemap: true,
+        sourcemap: isDev,
       },
       plugins: [
         nodeResolve({
@@ -51,7 +53,7 @@ export default () => {
     'assets/css/app.css',
     {
       annotation: "Sass files",
-      sourceMap: true,
+      sourceMap: isDev,
       sourceMapContents: true,
     }
   );
