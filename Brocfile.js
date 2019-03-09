@@ -2,7 +2,10 @@ import funnel from 'broccoli-funnel';
 import merge from 'broccoli-merge-trees';
 import CompileSass from 'broccoli-sass-source-maps';
 import Sass from 'sass';
-import babel from 'broccoli-babel-transpiler';
+import Rollup from 'broccoli-rollup';
+import babel from 'rollup-plugin-babel';
+import nodeResolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 
 const compileSass = CompileSass(Sass);
 
@@ -15,17 +18,30 @@ export default () => {
     annotation: "Index file",
   });
 
-  // Copy JS files from app root to destination
-  let js = funnel(appRoot, {
-    include: ["**/*.js"],
-    destDir: 'assets/js',
-    annotation: "JS files",
-  });
-
-  // Transpile JS files to ES5
-  js = babel(js, {
-    browserPolyfill: true,
-    sourceMap: 'inline',
+  // Compile JS through rollup
+  let js = new Rollup(appRoot, {
+    inputFiles: ["**/*.js"],
+    annotation: "JS Transformation",
+    rollup: {
+      input: "app.js",
+      output: {
+        file: "assets/js/app.js",
+        format: "iife",
+        sourcemap: true,
+      },
+      plugins: [
+        nodeResolve({
+          jsnext: true,
+          browser: true,
+        }),
+        commonjs({
+          include: 'node_modules/**',
+        }),
+        babel({
+          exclude: "node_modules/**",
+        }),
+      ],
+    }
   });
 
   // Compile scss files to css
