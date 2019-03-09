@@ -21,6 +21,7 @@ yarn add --dev broccoli \
     broccoli-sass-source-maps \
     broccoli-livereload \
     broccoli-clean-css \
+    broccoli-stew \
     sass
 ```
 
@@ -43,6 +44,7 @@ npm install --save-dev broccoli \
     broccoli-sass-source-maps \
     broccoli-livereload \
     broccoli-clean-css \
+    broccoli-stew \
     sass
 ```
 
