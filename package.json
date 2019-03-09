@@ -24,6 +24,7 @@
   "homepage": "https://github.com/oligriffiths/emberconf-broccoli-workshop#readme",
   "devDependencies": {
     "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
     "broccoli": "^2.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "broccoli-babel-transpiler": "^7.2.0",
