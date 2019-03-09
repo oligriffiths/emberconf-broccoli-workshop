@@ -2,6 +2,7 @@ import funnel from 'broccoli-funnel';
 import merge from 'broccoli-merge-trees';
 import CompileSass from 'broccoli-sass-source-maps';
 import Sass from 'sass';
+import babel from 'broccoli-babel-transpiler';
 
 const compileSass = CompileSass(Sass);
 
@@ -15,10 +16,16 @@ export default () => {
   });
 
   // Copy JS files from app root to destination
-  const js = funnel(appRoot, {
+  let js = funnel(appRoot, {
     include: ["**/*.js"],
     destDir: 'assets/js',
     annotation: "JS files",
+  });
+
+  // Transpile JS files to ES5
+  js = babel(js, {
+    browserPolyfill: true,
+    sourceMap: 'inline',
   });
 
   // Compile scss files to css
