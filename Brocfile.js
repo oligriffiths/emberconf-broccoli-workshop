@@ -4,6 +4,8 @@ import CompileSass from 'broccoli-sass-source-maps';
 import Sass from 'sass';
 import Rollup from 'broccoli-rollup';
 import LiveReload from 'broccoli-livereload';
+import EsLint from 'broccoli-lint-eslint';
+import sassLint from 'broccoli-sass-lint';
 import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
@@ -21,8 +23,10 @@ export default (options) => {
     annotation: "Index file",
   });
 
+  let js = EsLint.create(appRoot);
+
   // Compile JS through rollup
-  let js = new Rollup(appRoot, {
+  js = new Rollup(js, {
     inputFiles: ["**/*.js"],
     annotation: "JS Transformation",
     rollup: {
@@ -48,9 +52,13 @@ export default (options) => {
   });
 
   // Compile scss files to css
-  const css = compileSass(
-    [appRoot],
-    'styles/app.scss',
+  let css = sassLint(appRoot + '/styles', {
+    disableTestGenerator: true,
+  });
+
+  css = compileSass(
+    [css],
+    'app.scss',
     'assets/css/app.css',
     {
       annotation: "Sass files",
