@@ -3,6 +3,7 @@ import merge from 'broccoli-merge-trees';
 import CompileSass from 'broccoli-sass-source-maps';
 import Sass from 'sass';
 import Rollup from 'broccoli-rollup';
+import LiveReload from 'broccoli-livereload';
 import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
@@ -58,5 +59,14 @@ export default (options) => {
     }
   );
 
-  return merge([html, js, css]);
+  let tree = merge([html, js, css]);
+
+  // Include live reaload server
+  if (isDev) {
+    tree = new LiveReload(tree, {
+      target: 'index.html',
+    });
+  }
+
+  return tree;
 }
