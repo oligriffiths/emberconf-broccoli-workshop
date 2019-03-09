@@ -6,13 +6,16 @@ import Rollup from 'broccoli-rollup';
 import LiveReload from 'broccoli-livereload';
 import EsLint from 'broccoli-lint-eslint';
 import sassLint from 'broccoli-sass-lint';
+import CleanCss from 'broccoli-clean-css';
 import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import uglify from 'rollup-plugin-uglify';
 
 const compileSass = CompileSass(Sass);
 
 export default (options) => {
+  const isProd = options.env === 'production';
   const isDev = options.env === 'development';
 
   const appRoot = 'src';
@@ -25,6 +28,23 @@ export default (options) => {
 
   let js = EsLint.create(appRoot);
 
+  const rollupPlugins = [
+    nodeResolve({
+      jsnext: true,
+      browser: true,
+    }),
+    commonjs({
+      include: 'node_modules/**',
+    }),
+    babel({
+      exclude: "node_modules/**",
+    }),
+  ];
+
+  if (isProd) {
+    rollupPlugins.push(uglify());
+  }
+
   // Compile JS through rollup
   js = new Rollup(js, {
     inputFiles: ["**/*.js"],
@@ -36,18 +56,7 @@ export default (options) => {
         format: "iife",
         sourcemap: isDev,
       },
-      plugins: [
-        nodeResolve({
-          jsnext: true,
-          browser: true,
-        }),
-        commonjs({
-          include: 'node_modules/**',
-        }),
-        babel({
-          exclude: "node_modules/**",
-        }),
-      ],
+      plugins: rollupPlugins,
     }
   });
 
@@ -67,9 +76,13 @@ export default (options) => {
     }
   );
 
+  if (isProd) {
+    css = new CleanCss(css);
+  }
+
   let tree = merge([html, js, css]);
 
-  // Include live reaload server
+  // Include live reload server
   if (isDev) {
     tree = new LiveReload(tree, {
       target: 'index.html',
